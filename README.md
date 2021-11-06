@@ -1,3 +1,5 @@
 # Lab 7 - Starter Code
 
- https://jingxianw.github.io/Lab7_Starter/
+no partner
+ 
+Deployed Github Pages URL: https://jingxianw.github.io/Lab7_Starter/
