@@ -3,12 +3,28 @@
 
 const CACHE_NAME = 'lab-7-starter';
 
+// reference: https://developers.google.com/web/fundamentals/primers/service-workers
+var urlsToCache = [
+  '.',
+  'assets/scripts/main.js',
+  'assets/scripts/Router.js',
+  'assets/styles/main.css'
+];
+
 // Once the service worker has been installed, feed it some initial URLs to cache
 self.addEventListener('install', function (event) {
   /**
    * TODO - Part 2 Step 2
    * Create a function as outlined above
    */
+  // reference: https://developers.google.com/web/fundamentals/primers/service-workers
+   event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Opened cache')
+        return cache.addAll(urlsToCache)
+      })
+  )
 });
 
 /**
@@ -21,6 +37,8 @@ self.addEventListener('activate', function (event) {
    * TODO - Part 2 Step 3
    * Create a function as outlined above, it should be one line
    */
+  // reference: https://developer.mozilla.org/en-US/docs/Web/API/Clients/claim
+   event.waitUntil(clients.claim())
 });
 
 // Intercept fetch requests and store them in the cache
@@ -29,4 +47,15 @@ self.addEventListener('fetch', function (event) {
    * TODO - Part 2 Step 4
    * Create a function as outlined above
    */
+  // reference: https://developers.google.com/web/fundamentals/primers/service-workers
+   event.respondWith(
+    caches.match(event.request)
+      .then(function(response) {
+        if (response) {
+          return response
+        }
+        return fetch(event.request)
+      }
+    )
+  )
 });
